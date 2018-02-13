@@ -12,8 +12,9 @@ public class SudokuBoard extends JFrame{
 
     GameLogic gameLogic;
     
-    final String colorButtonField = "#f6f6f6",
-                 colorBackGround = "#000000";
+    final String colourButtonField = "#f6f6f6",
+                 colourBackGround = "#000000",
+                 colourButtonUnlocked = "#c2c2c2";
     
     int windowSizeX,
         windowSizeY,              
@@ -36,10 +37,25 @@ public class SudokuBoard extends JFrame{
         int value;
         
         public boardField() {
-            addActionListener( this);
+            addActionListener( this);            
             this.value = 0;
             this.setText( "");
-            this.setBackground( Color.decode( colorButtonField));
+            this.setBackground( Color.decode( colourButtonField));
+        }
+        
+        public boardField( int fieldIndex){
+            addActionListener( this); 
+            if( gameLogic.isFieldUnlocked( fieldIndex )){
+                this.value = gameLogic.getValueOfField( fieldIndex);
+                this.setText( value + "");
+                setEnabled( false);
+                setBackground( Color.decode( colourButtonUnlocked) );
+            }
+            else{
+                this.value = 0;
+                this.setText( "");
+                this.setBackground( Color.decode( colourButtonField));
+            }
         }
         
         @Override
@@ -79,11 +95,11 @@ public class SudokuBoard extends JFrame{
         setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE);
         setSize( windowSizeY, windowSizeX);
         setLayout( new GridLayout( gridSizeY, gridSizeX, gridBorder ,gridBorder));
-        getContentPane().setBackground( Color.decode( colorBackGround));
+        getContentPane().setBackground( Color.decode( colourBackGround));
         setResizable( false);
         
         for( int f = 0; f < this.boardSize; ++f){
-            this.fields[f] = new boardField();
+            this.fields[f] = new boardField(f);
         }
                            
         for( int f = 0; f < this.gridSize; ++f){
