@@ -30,19 +30,23 @@ public class SudokuMenu extends JFrame{
             
             try{
                 size = Integer.parseInt( getSudokuSize.getText());
+                
+                if( size <= 0)
+                    throw new Exception();
+                
                 new SudokuBoard( size);     
                 SudokuMenu.this.setVisible( false);
                 
             }
             catch( Exception e){
-                getSudokuSize.setText( "Podaj liczbę!");
+                getSudokuSize.setText( "Zła wartość!");
             }
         }
     }
     
     public SudokuMenu() throws HeadlessException {
         super( "Menu");
-        setSize( 300,100);
+        setSize( 750,100);
         setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE);
         getContentPane().setBackground( Color.decode( "#238E23"));
         
@@ -54,7 +58,7 @@ public class SudokuMenu extends JFrame{
         this.sudokuSize.setEnabled( false);
         this.sudokuSize.setDisabledTextColor( Color.BLACK);
         this.getSudokuSize.setText( "3");
-        this.getSudokuSize.setPreferredSize(new Dimension( 20, 26));
+        this.getSudokuSize.setPreferredSize(new Dimension( 90, 26));
         this.sudokuSize.setPreferredSize(new Dimension( 80, 26));
         this.startGame.setPreferredSize(new Dimension( 70, 26));
         
@@ -65,8 +69,6 @@ public class SudokuMenu extends JFrame{
         this.menuPanel.setBorder( BorderFactory.createEmptyBorder(0, 0, 0, 0));
         this.menuPanel.setBackground( Color.decode( "#238E23"));
         add( this.menuPanel);
-        
-        
         
         
         setVisible( true);
