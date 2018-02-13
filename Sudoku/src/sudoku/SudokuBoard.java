@@ -13,18 +13,18 @@ public class SudokuBoard extends JFrame{
     final String colorButtonField = "#f6f6f6",
                  colorBackGround = "#000000";
     
-    final int windowSizeX = 600,
-              windowSizeY = 600,              
-              gridBorder = 4,  
-              gridSizeX = 3,
-              gridSizeY = 3,
-              gridSize = this.gridSizeX * this.gridSizeY,
-              partBoardSizeX = 3,
-              partBoardSizeY = 3,
-              partBoardSize = this.partBoardSizeX * this.partBoardSizeY,
-              boardSizeX = this.partBoardSizeX * this.gridSizeX,
-              boardSizeY = this.partBoardSizeY * this.gridSizeY,
-              boardSize = this.boardSizeX * this.boardSizeY;
+    int windowSizeX,
+        windowSizeY,              
+        gridBorder,  
+        gridSizeX,
+        gridSizeY,
+        gridSize,
+        partBoardSizeX,
+        partBoardSizeY,
+        partBoardSize,
+        boardSizeX,
+        boardSizeY ,
+        boardSize;
     
     JPanel[] boardPart;
     
@@ -52,8 +52,26 @@ public class SudokuBoard extends JFrame{
         }
     }
     
-    public SudokuBoard() throws HeadlessException {
+    public SudokuBoard( ) throws HeadlessException {
+        this(3);
+    }
+    
+    public SudokuBoard( int SudokuSize) throws HeadlessException {
         super( "Sudoku");
+        
+        windowSizeX = 200*SudokuSize;
+        windowSizeY = 200*SudokuSize;              
+        gridBorder = 4;  
+        gridSizeX = SudokuSize;
+        gridSizeY = SudokuSize;
+        gridSize = this.gridSizeX * this.gridSizeY;
+        partBoardSizeX = SudokuSize;
+        partBoardSizeY = SudokuSize;
+        partBoardSize = this.partBoardSizeX * this.partBoardSizeY;
+        boardSizeX = this.partBoardSizeX * this.gridSizeX;
+        boardSizeY = this.partBoardSizeY * this.gridSizeY;
+        boardSize = this.boardSizeX * this.boardSizeY;
+
         this.fields = new boardField[ this.boardSize];
         this.boardPart = new JPanel[gridSize];
         
@@ -62,7 +80,7 @@ public class SudokuBoard extends JFrame{
         setLayout( new GridLayout( gridSizeY, gridSizeX, gridBorder ,gridBorder));
         getContentPane().setBackground( Color.decode( colorBackGround));
         setResizable( false);
-        setVisible( true);
+        
         
         for( int f = 0; f < this.boardSize; ++f){
             this.fields[f] = new boardField();
@@ -77,6 +95,6 @@ public class SudokuBoard extends JFrame{
                     
         }
         
-        
+        setVisible( true);
     }
 }
