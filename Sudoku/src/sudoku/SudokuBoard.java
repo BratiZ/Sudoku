@@ -10,6 +10,8 @@ import javax.swing.*;
 
 public class SudokuBoard extends JFrame{
 
+    GameLogic gameLogic;
+    
     final String colorButtonField = "#f6f6f6",
                  colorBackGround = "#000000";
     
@@ -38,7 +40,6 @@ public class SudokuBoard extends JFrame{
             this.value = 0;
             this.setText( "");
             this.setBackground( Color.decode( colorButtonField));
-            
         }
         
         @Override
@@ -52,15 +53,15 @@ public class SudokuBoard extends JFrame{
         }
     }
     
-    public SudokuBoard( ) throws HeadlessException {
+    public SudokuBoard() throws HeadlessException {
         this(3);
     }
     
     public SudokuBoard( int SudokuSize) throws HeadlessException {
         super( "Sudoku");
-        
-        windowSizeX = 200*SudokuSize;
-        windowSizeY = 200*SudokuSize;              
+        gameLogic = new GameLogic( SudokuSize);
+        windowSizeX = 200 * SudokuSize;
+        windowSizeY = 200 * SudokuSize;              
         gridBorder = 4;  
         gridSizeX = SudokuSize;
         gridSizeY = SudokuSize;
@@ -80,7 +81,6 @@ public class SudokuBoard extends JFrame{
         setLayout( new GridLayout( gridSizeY, gridSizeX, gridBorder ,gridBorder));
         getContentPane().setBackground( Color.decode( colorBackGround));
         setResizable( false);
-        
         
         for( int f = 0; f < this.boardSize; ++f){
             this.fields[f] = new boardField();
