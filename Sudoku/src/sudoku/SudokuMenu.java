@@ -59,7 +59,7 @@ public class SudokuMenu extends JFrame{
         this.getSudokuSize.setText( "3");
         this.sudokuSize.setEnabled( false);
         this.getSudokuSize.setPreferredSize(new Dimension( 90, 26));
-        this.sudokuSize.setPreferredSize(new Dimension( 90, 26));
+        this.sudokuSize.setPreferredSize(new Dimension( 100, 26));
         this.startGame.setPreferredSize(new Dimension( 70, 26));
         
         this.menuPanel.setLayout( new GridBagLayout());
