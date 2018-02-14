@@ -1,5 +1,5 @@
 package sudoku;
-//Siemson Przemson
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -47,6 +47,7 @@ public class SudokuMenu extends JFrame{
         setSize( 400,100);
         setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE);
         getContentPane().setBackground( Color.decode( "#238E23"));
+        setResizable( false);
         
         this.startGame = new MenuButton();
         this.sudokuSize = new JTextField( "Sudoku size: ");
