@@ -77,7 +77,7 @@ public class SudokuBoard extends JFrame{
             if( gameLogic.isFieldUnlocked( fieldIndex )){
                 setEnabled( false);
                 this.value = gameLogic.getValueOfField( fieldIndex);
-                setText("ddd");
+                setText("" + this.value);
                 setBackground( Color.decode( colourButtonUnlocked) );
 
             }
@@ -99,18 +99,9 @@ public class SudokuBoard extends JFrame{
                 this.setText("");
         }
         
-        @Override
-        protected void paintComponent(Graphics g) {
-        if (!this.isEnabled()) {
-            g.setColor( Color.YELLOW);
-        } 
-        else {
-            g.setColor( Color.BLUE);
-        }
-
-        g.fillRect(0, 0, getWidth(), getHeight());
-        super.paintComponent(g);
-      }
+    }
+    
+    void ResetAllButtons(){
         
     }
     
