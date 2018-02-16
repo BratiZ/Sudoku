@@ -33,6 +33,8 @@ public class SudokuBoard extends JFrame{
         boardSizeY ,
         boardSize;
     
+    boolean buttonHelpPressed;
+    
     JPanel boardPart[],
            boardBoard,
            boardTop;
@@ -41,14 +43,15 @@ public class SudokuBoard extends JFrame{
       
     BoardTopButton topButtonCheck,
                    topButtonReset,
-                   topButtonShowBadAnser,
-                   topButtonShowCorrectAnswer;
-                   
+                   topButtonShowBadAnswer,
+                   topButtonShowCorrectAnswer,
+                   topButtonGetHelp;
+    
     class BoardTopButton extends JButton implements ActionListener{
 
         public BoardTopButton( String buttonName) {
             this.setText("<html><center><font color=\"cc0099\">" + buttonName +"</font></center></html>");
-            this.setPreferredSize( new Dimension( 120, 40));
+            this.setPreferredSize( new Dimension( 100, 40));
             addActionListener( this);
             
         }
@@ -57,9 +60,45 @@ public class SudokuBoard extends JFrame{
         public void actionPerformed(ActionEvent ae) {
             Object source = ae.getSource();
             
-            if( source == topButtonCheck)
-                System.out.println("Check");
+            if( source == topButtonCheck){
+                CheckBoard();
+            }
+            else if( source == topButtonReset){
+                ResetBoard();
+            }
+            else if( source == topButtonShowBadAnswer){
+                ShowBadAnswer();
+            }
+            else if( source == topButtonShowCorrectAnswer){
+                ShowCorrectAnswer();
+            }
+            else if( source == topButtonGetHelp){
+                GetHelp();
+            }
         }
+    }
+    
+    void CheckBoard(){
+        
+    }
+    
+    void ResetBoard(){
+        
+    }
+    
+    void ShowBadAnswer(){
+        
+    }
+    
+    void ShowCorrectAnswer(){
+        
+    }
+    
+    void GetHelp(){
+        if( this.buttonHelpPressed)
+            this.buttonHelpPressed = false;
+        else 
+            this.buttonHelpPressed = true;
     }
     
     class boardField extends JButton implements ActionListener{
@@ -77,7 +116,7 @@ public class SudokuBoard extends JFrame{
             if( gameLogic.isFieldUnlocked( fieldIndex )){
                 setEnabled( false);
                 this.value = gameLogic.getValueOfField( fieldIndex);
-                setText("" + this.value);
+                setText( "" + this.value);
                 setBackground( Color.decode( colourButtonUnlocked) );
 
             }
@@ -88,17 +127,33 @@ public class SudokuBoard extends JFrame{
             }
         }
         
+        void ShowValue( int fieldIndex){
+            setEnabled( false);
+            this.value = gameLogic.getValueOfField( fieldIndex);
+            setText( "" + this.value);
+            setBackground( Color.decode( colourButtonUnlocked) );
+        }
+        
         @Override
         public void actionPerformed(ActionEvent ae) {
             this.value = ++this.value % 10;
             Object source = ae.getSource();
+            
+            if( buttonHelpPressed){
+                for( int f = 0; f < boardSize; ++f)
+                    if( source == fields[f]){
+                        fields[f].ShowValue( f);
+                        buttonHelpPressed = false;
+                        System.out.println(f);
+                    }
+            }
+            else          
             
             if( this.value != 0)
                 this.setText( this.value + "");
             else
                 this.setText("");
         }
-        
     }
     
     void ResetAllButtons(){
@@ -113,10 +168,10 @@ public class SudokuBoard extends JFrame{
         super( "Sudoku");
         this.gameLogic = new GameLogic( SudokuSize);
         this.windowSizeX = 200 * SudokuSize;
-        this.windowSizeY = 300 * SudokuSize;              
+        this.windowSizeY = 250 * SudokuSize;              
         this.gridBorder = 4;  
         this.gridSizeX = SudokuSize;
-        this.gridSizeY = SudokuSize+1;
+        this.gridSizeY = SudokuSize;
         this.gridSize = this.gridSizeX * this.gridSizeY;
         this.partBoardSizeX = SudokuSize;
         this.partBoardSizeY = SudokuSize;
@@ -125,10 +180,13 @@ public class SudokuBoard extends JFrame{
         this.boardSizeY = this.partBoardSizeY * this.gridSizeY;
         this.boardSize = this.boardSizeX * this.boardSizeY;
         
+        this.buttonHelpPressed = false;
+        
         this.topButtonCheck = new BoardTopButton("Check");
         this.topButtonReset = new BoardTopButton("Reset");
-        this.topButtonShowBadAnser = new BoardTopButton("Good Answer");
+        this.topButtonShowBadAnswer = new BoardTopButton("Good Answer");
         this.topButtonShowCorrectAnswer = new BoardTopButton("Bad Answer");
+        this.topButtonGetHelp = new BoardTopButton("Help");
         
         this.boardTop = new JPanel();
         this.boardBoard = new JPanel();
@@ -147,8 +205,9 @@ public class SudokuBoard extends JFrame{
         
         this.boardTop.add( this.topButtonCheck);
         this.boardTop.add( this.topButtonReset);
-        this.boardTop.add( this.topButtonShowBadAnser);
+        this.boardTop.add( this.topButtonShowBadAnswer);
         this.boardTop.add( this.topButtonShowCorrectAnswer);
+        this.boardTop.add( this.topButtonGetHelp);
 
         
         this.add( BorderLayout.NORTH, this.boardTop);
@@ -157,15 +216,21 @@ public class SudokuBoard extends JFrame{
         for( int f = 0; f < this.boardSize; ++f){
             this.fields[f] = new boardField(f);
         }
-                    
-        for( int f = 0; f < this.gridSize; ++f){
-            this.boardPart[f] = new JPanel();
-            boardBoard.add( this.boardPart[f]);
-            this.boardPart[f].setLayout( new GridLayout( partBoardSizeY, partBoardSizeX));
-                for( int h = f*partBoardSize; h < f*partBoardSize + this.partBoardSize; ++h)
-                    this.boardPart[f].add( this.fields[h]);
+       
+        for( int s = 0;  s < gridSizeX; ++s){
+            for( int d = 0; d < gridSizeX; ++d){
+                this.boardPart[ ( ( s*gridSizeX) + ( d))] = new JPanel();
+                this.boardBoard.add( this.boardPart[ ( ( s*gridSizeX) + ( d))]);
+                this.boardPart[ ( ( s*gridSizeX) + ( d))].setLayout( new GridLayout( partBoardSizeY, partBoardSizeX));
+                for( int f = 0; f < gridSizeX; ++f){
+                    for( int g = 0; g < gridSizeX; ++g){
+                        this.boardPart[ (( s*gridSizeX) + ( d))].add( this.fields[ ( ( gridSizeX*gridSize*s)+ ( d*gridSizeX) + ( f*gridSize) + g)]);
+                    }
+                }
+            }
         }
-        
+                
+        System.out.println( gameLogic);
         setVisible( true);
     }
 }
